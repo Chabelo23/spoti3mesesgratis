@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify - Simulación de Datos de Tarjeta</title>
+    <script>
+        // Función para validar los datos de tarjeta
+        function validarDatos() {
+            const nombre = document.getElementById('nombre').value;
+            const numero = document.getElementById('numero').value;
+            const vencimiento = document.getElementById('vencimiento').value;
+            const cvv = document.getElementById('cvv').value;
+            
+            // Expresión regular para validar el número de tarjeta (mínimo 13 y máximo 19 dígitos)
+            const regexNumero = /^[0-9]{13,19}$/;
+            if (!regexNumero.test(numero)) {
+                alert("El número de tarjeta no es válido. Debe tener entre 13 y 19 dígitos.");
+                return false;
+            }
+
+            // Expresión regular para validar la fecha de vencimiento MM/AA
+            const regexVencimiento = /^(0[1-9]|1[0-2])\/\d{2}$/;
+            if (!regexVencimiento.test(vencimiento)) {
+                alert("La fecha de vencimiento no es válida. Usa el formato MM/AA.");
+                return false;
+            }
+
+            // Expresión regular para validar el CVV (3 dígitos)
+            const regexCVV = /^[0-9]{3}$/;
+            if (!regexCVV.test(cvv)) {
+                alert("El CVV no es válido. Debe tener 3 dígitos.");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Función para almacenar los datos de tarjeta introducidos
+        function almacenarDatos() {
+            if (!validarDatos()) return;
+
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const numero = document.getElementById('numero').value;
+            const vencimiento = document.getElementById('vencimiento').value;
+            const cvv = document.getElementById('cvv').value;
+
+            // Crear un objeto con los datos introducidos
+            const tarjeta = {
+                nombre: nombre,
+                numero: numero,
+                vencimiento: vencimiento,
+                cvv: cvv
+            };
+
+            // Almacenar los datos en el localStorage
+            localStorage.setItem('tarjetaFalsa', JSON.stringify(tarjeta));
+
+            // Mostrar mensaje de confirmación
+            const mensaje = document.getElementById('mensajeConfirmacion');
+            mensaje.style.display = 'block'; // Mostrar el mensaje de confirmación
+
+            // Limpiar el formulario después de enviarlo
+            document.getElementById('formularioTarjeta').reset();
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Contenido principal de la página -->
+    <div class="main-content">
+        <!-- Tu contenido de Spotify aquí -->
+
+        <!-- Pie de página de Spotify -->
+        <footer>
+            <div class="footer-content">
+                <!-- Enlaces de Spotify -->
+                <div class="footer-links">
+                    <ul>
+                        <h2>Enlaces útiles</h2>
+                        <li><a href="support.spotify.com/">Ayuda</a></li>
+                        <li><a href="open.spotify.com/">Reproductor web</a></li>
+                        <li><a href="www.spotify.com/co-es/download/">App móvil gratis</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Formulario para ingresar los datos de la tarjeta -->
+                <div class="form-container">
+                    <h2>Simulación de Datos de Tarjeta</h2>
+                    <form id="formularioTarjeta" onsubmit="event.preventDefault(); almacenarDatos();">
+                        <label for="nombre">Nombre del titular:</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                        <br><br>
+
+                        <label for="numero">Número de tarjeta:</label>
+                        <input type="text" id="numero" name="numero" maxlength="19" placeholder="4111 1111 1111 1111" required>
+                        <br><br>
+
+                        <label for="vencimiento">Fecha de vencimiento:</label>
+                        <input type="text" id="vencimiento" name="vencimiento" placeholder="MM/AA" required>
+                        <br><br>
+
+                        <label for="cvv">CVV:</label>
+                        <input type="text" id="cvv" name="cvv" maxlength="3" required>
+                        <br><br>
+
+                        <button type="submit">Guardar datos</button>
+                    </form>
+
+                    <!-- Mensaje de confirmación -->
+                    <div id="mensajeConfirmacion" style="display: none; text-align: center; padding: 20px; background-color: #28a745; color: white; font-size: 24px; border-radius: 5px;">
+                        ¡Gracias por suscribirte! Los datos de tu tarjeta han sido almacenados correctamente.
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+</body>
+</html>
